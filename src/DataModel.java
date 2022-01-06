@@ -2,11 +2,12 @@
 //
 
 import javafx.collections.ObservableList;
+import java.util.Comparator;
 
 public class DataModel {
     public class Inventory {
-        private ObservableList<Part> allParts;
-        private ObservableList<Product> allProducts;
+        private static ObservableList<Part> allParts;
+        private static ObservableList<Product> allProducts;
 
         // Noted that the UML spec does not appear to call for a constructor? Will have to confirm whether or not
         // I'm even allowed to add a constructor (instantiating the Inventory makes sense to me).
@@ -16,12 +17,15 @@ public class DataModel {
 //        }
 
         public void addPart(Part newPart) {
+            allParts.add(newPart);
         }
 
         public void addProduct(Product newProduct) {
+            allProducts.add(newProduct);
         }
 
         public Part lookupPart(int partId) {
+
         }
 
         public Product lookupProduct(int productId) {
@@ -49,6 +53,7 @@ public class DataModel {
         public ObservableList<Product> getAllProducts() {
             return this.allProducts;
         }
+
     }
 
     public abstract class Part{
@@ -152,8 +157,9 @@ public class DataModel {
         }
     }
 
-    public class Product {
-        private ObservableList<Part> associatedParts;
+    // Adding this superclass for both Part and Product recognizing that Product's fields are a superset of Part's fields. Additionally, while writing a comparator to sort
+    // ObservableLists of both Parts and Products by their id fields, I realized that the comparator was also something both classes had in common. Just trying to keep it DRY!
+    public abstract class InventoryItem {
         private int id;
         private String name;
         private double price;
@@ -161,7 +167,7 @@ public class DataModel {
         private int min;
         private int max;
 
-        public Product(int id, String name, double price, int stock, int min, int max) {
+        public InventoryItem(int id, String name, double price, int stock, int min, int max) {
             this.id = id;
             this.name = name;
             this.price = price;
@@ -218,10 +224,25 @@ public class DataModel {
             this.max = max;
         }
 
+        public static Comparator<InventoryItem> getIdComparator() {
+            return Comparator.comparingInt(partA -> partA.id);
+        }
+    }
+
+    public class Product extends InventoryItem {
+        private final ObservableList<Part> associatedParts;
+
+        public Product(int id, String name, double price, int stock, int min, int max, ObservableList<Part> associatedParts) {
+            super(id, name, price, stock, min, max);
+            this.associatedParts = associatedParts;
+        }
+
         public void addAssociatedPart(Part part) {
+            this.associatedParts.add(part);
         }
 
         public boolean deletedAssociatedPart(Part selectedAssociatedPart) {
+            this.associatedParts.remove(selectedAssociatedPart);
         }
 
         public ObservableList<Part> getAllAssociatedParts() {
