@@ -55,15 +55,26 @@ public class DataModel {
 
         public ObservableList<Part> lookupPart(String partName) {
             ObservableList<Part> matches = FXCollections.observableArrayList();
-            for(part : getAllParts()) {
-
+            for(Part part : getAllParts()) {
+                if(part.getName().contains(partName)) {
+                    matches.add(part);
+                }
             }
+            return matches;
         }
 
         public ObservableList<Product> lookupProduct(String productName) {
+            ObservableList<Product> matches = FXCollections.observableArrayList();
+            for(Product product : getAllProducts()) {
+                if(product.getName().contains(productName)) {
+                    matches.add(product);
+                }
+            }
+            return matches;
         }
 
         public void updatePart(int index, Product newProduct) {
+            
         }
 
         public boolean deletePart(Part selectedPart) {
