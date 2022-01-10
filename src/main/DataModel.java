@@ -1,15 +1,21 @@
+package main;
 // Bugs/Problems encountered (and their resolutions):
 // 1. inventorySearch not accepting ObservableList<Part> for ObservableList<InventoryItem> parameter - had to use <? extends InventoryItem> to make it work.
 // 2. (lesson) Learned that I can replace very verbose functions with lambda expressions - anonymous methods with implied types, in many case. Particularly, for comparator definitions.
 // 3. Was unable to instantiate ObservableList because it is abstract. Used factory method per stack overflow.
+
+// Future Improvement Suggestions:
+//
+//
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.Comparator;
 
 public class DataModel {
-    public class Inventory {
-        private static ObservableList<Part> allParts;
-        private static ObservableList<Product> allProducts;
+    public static class Inventory {
+        private static ObservableList<Part> allParts = FXCollections.observableArrayList();
+        private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
 
         // User-friendly way to search by ID: Allows users to only provide two parameters instead of manually entering the bounds of the list.
         public static InventoryItem inventorySearch(ObservableList<? extends InventoryItem> list, int itemId){
@@ -39,7 +45,7 @@ public class DataModel {
         }
 
         public void addProduct(Product newProduct) {
-            allProducts.add(newProduct);
+            getAllProducts().add(newProduct);
         }
 
         // Inventory Item lookups will return null if the item in question is not found.
@@ -73,17 +79,23 @@ public class DataModel {
             return matches;
         }
 
-        public void updatePart(int index, Product newProduct) {
-            
+        public void updatePart(int index, Part selectedPart) {
+            getAllParts().set(index, selectedPart);
+        }
+
+        public void updateProduct(int index, Product newProduct){
+            getAllProducts().set(index, newProduct);
         }
 
         public boolean deletePart(Part selectedPart) {
+            return getAllParts().remove(selectedPart);
         }
 
         public boolean deleteProduct(Product selectedPart) {
+            return getAllProducts().remove(selectedPart);
         }
 
-        public ObservableList<Part> getAllParts() {
+        public static ObservableList<Part> getAllParts() {
             return allParts;
         }
 
@@ -95,7 +107,7 @@ public class DataModel {
 
     // Adding this superclass for both Part and Product recognizing that Product's fields are a superset of Part's fields. Additionally, while writing a comparator to sort
     // ObservableLists of both Parts and Products by their id fields, I realized that the comparator was also something both classes had in common. Just trying to keep it DRY!
-    public abstract class InventoryItem {
+    public static abstract class InventoryItem {
         private int id;
         private String name;
         private double price;
@@ -169,13 +181,13 @@ public class DataModel {
         }
     }
 
-    public abstract class Part extends InventoryItem{
+    public static abstract class Part extends InventoryItem{
         public Part(int id, String name, double price, int stock, int min, int max) {
             super(id, name, price, stock, min, max);
         }
     }
 
-    public class InHouse extends Part {
+    public static class InHouse extends Part {
 
         private int machineId;
 
@@ -193,7 +205,7 @@ public class DataModel {
         }
     }
 
-    public class Outsourced extends Part {
+    public static class Outsourced extends Part {
         private String companyName;
 
         public Outsourced(int id, String name, double price, int stock, int min, int max, String companyName) {
@@ -202,15 +214,15 @@ public class DataModel {
         }
 
         public String getCompanyName() {
-            return companyName;
+            return this.companyName;
         }
 
-        public String setCompanyName(String companyName) {
+        public void setCompanyName(String companyName) {
             this.companyName = companyName;
         }
     }
 
-    public class Product extends InventoryItem {
+    public static class Product extends InventoryItem {
         private final ObservableList<Part> associatedParts;
 
         public Product(int id, String name, double price, int stock, int min, int max, ObservableList<Part> associatedParts) {
@@ -223,11 +235,39 @@ public class DataModel {
         }
 
         public boolean deletedAssociatedPart(Part selectedAssociatedPart) {
-            this.associatedParts.remove(selectedAssociatedPart);
+            return this.associatedParts.remove(selectedAssociatedPart);
         }
 
         public ObservableList<Part> getAllAssociatedParts() {
             return this.associatedParts;
         }
+
+        public void printAssociatedParts() {
+            if(!getAllAssociatedParts().isEmpty()) {
+                for (Part part : this.getAllAssociatedParts()) {
+                    System.out.println(part.getName());
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    // Generates new parts with pseudorandom values and inserts them into the given list. It assumes that the given
+    // list is empty. Half of the parts generated are InHouse, and half are Outsourced. Written for testing purposes.
+    public static void generateParts(ObservableList<Part> partList, int qty) {
+        String[] names = {"Jammenwerfer", "Schnozblonger", "Cortalorto", "Glorpius", "Shapram", "Koalong", "Muffintuppin"
+        , "Buggaluggajoozjooz", "Evil Monkey Wrench", "Diamondium Hammerus", "Magic Wand", "Muggle Wand", "Glip-glop"};
+        if(qty <= names.length) {
+            for(int i = 0; i < qty / 2; i++) {
+                partList.add(new InHouse((i+ 1), names[i], randomInt(100), randomInt(10), 1, 100, randomInt(10000)));
+            }
+            for(int i = qty / 2; i < qty; i++){
+                partList.add(new Outsourced((i+ 1), names[i], randomInt(100), randomInt(10), 1, 100, names[i] + "Inc."));
+            }
+        }
+    }
+
+    public static int randomInt(int max) {
+        return (int) (Math.floor(Math.random() * max + 1));
     }
 }

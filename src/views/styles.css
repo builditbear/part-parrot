@@ -1,0 +1,43 @@
+.margined-button {
+    -fx-padding: 10px;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 5px;
+    -fx-background-radius: 12px;
+    -fx-alignment: center;
+    -fx-text-fill: #FFFFFF;
+    -fx-font: bold 11 'sans-serif';
+}
+
+.table-label {
+    -fx-label-padding: 10px;
+    -fx-font: bold 13 'san-serif';
+}
+
+#mainview-label {
+    -fx-label-padding: 10px;
+    -fx-font: bold 18 'sans-serif';
+}
+
+.anchor-pane {
+    -fx-background-color: #A2C7E5;
+}
+
+.add-button {
+    -fx-background-color: #2660A4;
+}
+
+.modify-button {
+    -fx-background-color: #EEC643;
+    -fx-text-fill: #373F51;
+}
+
+.delete-button {
+    -fx-background-color: #E9190F;
+}
+
+#exit-button {
+    -fx-text-fill: #373F51;;
+}
+
+.search-field {
+}
