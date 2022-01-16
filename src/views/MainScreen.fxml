@@ -15,8 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" styleClass="anchor-pane" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" styleClass="anchor-pane" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewcontrollers.MainScreen">
    <children>
       <GridPane layoutX="14.0" layoutY="16.0" prefHeight="469.0" prefWidth="873.0">
         <columnConstraints>
@@ -58,23 +57,23 @@
                   <RowConstraints maxHeight="361.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                  <TableView fx:id="partsTable" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="Part ID" />
-                      <TableColumn prefWidth="75.0" text="Part Name" />
-                        <TableColumn prefWidth="100.0" text="Inventory Level" />
-                        <TableColumn prefWidth="145.0" text="Price/Cost per Unit" />
+                      <TableColumn fx:id="partId" prefWidth="75.0" text="Part ID" />
+                      <TableColumn fx:id="partName" prefWidth="75.0" text="Name" />
+                        <TableColumn fx:id="partStock" prefWidth="100.0" text="Inventory Level" />
+                        <TableColumn fx:id="partPrice" prefWidth="145.0" text="Price/Cost per Unit" />
                     </columns>
                      <GridPane.margin>
                         <Insets right="20.0" />
                      </GridPane.margin>
                   </TableView>
-                  <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TableView fx:id="productsTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="Part ID" />
-                      <TableColumn prefWidth="75.0" text="Part Name" />
-                        <TableColumn prefWidth="100.0" text="Inventory Level" />
-                        <TableColumn prefWidth="145.0" text="Price/Cost per Unit" />
+                      <TableColumn fx:id="productId" prefWidth="75.0" text="Product ID" />
+                      <TableColumn fx:id="productName" prefWidth="75.0" text="Name" />
+                        <TableColumn fx:id="productStock" prefWidth="100.0" text="Inventory Level" />
+                        <TableColumn fx:id="productPrice" prefWidth="145.0" text="Price/Cost per Unit" />
                     </columns>
                      <GridPane.margin>
                         <Insets left="20.0" />
@@ -116,7 +115,7 @@
                   </GridPane>
                   <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.rowIndex="2">
                     <buttons>
-                      <Button mnemonicParsing="false" text="Add" textAlignment="CENTER">
+                      <Button fx:id="partAddButton" mnemonicParsing="false" onAction="#onPartAdd" text="Add" textAlignment="CENTER">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -125,7 +124,7 @@
                               <String fx:value="add-button" />
                            </styleClass>
                         </Button>
-                        <Button mnemonicParsing="false" text="Modify" textAlignment="CENTER">
+                        <Button fx:id="partModButton" mnemonicParsing="false" onAction="#onPartMod" text="Modify" textAlignment="CENTER">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -134,7 +133,7 @@
                               <String fx:value="modify-button" />
                            </styleClass>
                         </Button>
-                        <Button mnemonicParsing="false" text="Delete" textAlignment="CENTER">
+                        <Button fx:id="partDelButton" mnemonicParsing="false" onAction="#onPartDel" text="Delete" textAlignment="CENTER">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -150,19 +149,19 @@
                   </ButtonBar>
                   <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <buttons>
-                      <Button mnemonicParsing="false" style="-fx-border-radius: 10 10 0 0;" text="Add">
+                      <Button fx:id="productAddButton" mnemonicParsing="false" onAction="#onProductAdd" style="-fx-border-radius: 10 10 0 0;" text="Add">
                            <styleClass>
                               <String fx:value="margined-button" />
                               <String fx:value="add-button" />
                            </styleClass>
                         </Button>
-                        <Button mnemonicParsing="false" style="-fx-border-radius: 10 10 0 0;" text="Modify">
+                        <Button fx:id="productModButton" mnemonicParsing="false" onAction="#onProductMod" style="-fx-border-radius: 10 10 0 0;" text="Modify">
                            <styleClass>
                               <String fx:value="margined-button" />
                               <String fx:value="modify-button" />
                            </styleClass>
                         </Button>
-                        <Button mnemonicParsing="false" style="-fx-border-radius: 10 10 0 0;" text="Delete">
+                        <Button fx:id="productDelButton" mnemonicParsing="false" onAction="#onProductDel" style="-fx-border-radius: 10 10 0 0;" text="Delete">
                            <styleClass>
                               <String fx:value="margined-button" />
                               <String fx:value="delete-button" />

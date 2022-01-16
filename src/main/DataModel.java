@@ -40,26 +40,26 @@ public class DataModel {
             return null;
         }
 
-        public void addPart(Part newPart) {
+        public static void addPart(Part newPart) {
             allParts.add(newPart);
         }
 
-        public void addProduct(Product newProduct) {
+        public static void addProduct(Product newProduct) {
             getAllProducts().add(newProduct);
         }
 
         // Inventory Item lookups will return null if the item in question is not found.
-        public Part lookupPart(int partId) {
+        public static Part lookupPart(int partId) {
             allParts.sort(InventoryItem.getIdComparator());
             return (Part) inventorySearch(getAllParts(), partId);
         }
 
-        public Product lookupProduct(int productId) {
+        public static Product lookupProduct(int productId) {
             allProducts.sort(InventoryItem.getIdComparator());
             return (Product) inventorySearch(getAllProducts(), productId);
         }
 
-        public ObservableList<Part> lookupPart(String partName) {
+        public static ObservableList<Part> lookupPart(String partName) {
             ObservableList<Part> matches = FXCollections.observableArrayList();
             for(Part part : getAllParts()) {
                 if(part.getName().contains(partName)) {
@@ -69,7 +69,7 @@ public class DataModel {
             return matches;
         }
 
-        public ObservableList<Product> lookupProduct(String productName) {
+        public static ObservableList<Product> lookupProduct(String productName) {
             ObservableList<Product> matches = FXCollections.observableArrayList();
             for(Product product : getAllProducts()) {
                 if(product.getName().contains(productName)) {
@@ -79,19 +79,19 @@ public class DataModel {
             return matches;
         }
 
-        public void updatePart(int index, Part selectedPart) {
+        public static void updatePart(int index, Part selectedPart) {
             getAllParts().set(index, selectedPart);
         }
 
-        public void updateProduct(int index, Product newProduct){
+        public static void updateProduct(int index, Product newProduct){
             getAllProducts().set(index, newProduct);
         }
 
-        public boolean deletePart(Part selectedPart) {
+        public static boolean deletePart(Part selectedPart) {
             return getAllParts().remove(selectedPart);
         }
 
-        public boolean deleteProduct(Product selectedPart) {
+        public static boolean deleteProduct(Product selectedPart) {
             return getAllProducts().remove(selectedPart);
         }
 
@@ -99,7 +99,7 @@ public class DataModel {
             return allParts;
         }
 
-        public ObservableList<Product> getAllProducts() {
+        public static ObservableList<Product> getAllProducts() {
             return allProducts;
         }
 
