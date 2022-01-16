@@ -90,7 +90,7 @@
                     </rowConstraints>
                      <children>
                         <Label styleClass="table-label" text="Parts" />
-                        <TextField prefHeight="25.0" prefWidth="146.0" promptText="Search by Part ID or Name" styleClass="search-field" GridPane.columnIndex="2" />
+                        <TextField fx:id="partSearchField" onKeyPressed="#onSearchKeyPress" prefHeight="25.0" prefWidth="146.0" promptText="Search by Part ID or Name" styleClass="search-field" GridPane.columnIndex="2" />
                      </children>
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="20.0" top="5.0" />
@@ -107,7 +107,7 @@
                      </rowConstraints>
                      <children>
                         <Label styleClass="table-label" text="Products" />
-                        <TextField prefHeight="25.0" prefWidth="138.0" promptText="Search by Product ID or Name" styleClass="search-field" GridPane.columnIndex="2" />
+                        <TextField fx:id="productSearchField" onKeyPressed="#onSearchKeyPress" prefHeight="25.0" prefWidth="138.0" promptText="Search by Product ID or Name" styleClass="search-field" GridPane.columnIndex="2" />
                      </children>
                      <GridPane.margin>
                         <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
@@ -133,7 +133,7 @@
                               <String fx:value="modify-button" />
                            </styleClass>
                         </Button>
-                        <Button fx:id="partDelButton" mnemonicParsing="false" onAction="#onPartDel" text="Delete" textAlignment="CENTER">
+                        <Button fx:id="partDelButton" mnemonicParsing="false" onMouseClicked="#onPartDel" text="Delete" textAlignment="CENTER">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -161,7 +161,7 @@
                               <String fx:value="modify-button" />
                            </styleClass>
                         </Button>
-                        <Button fx:id="productDelButton" mnemonicParsing="false" onAction="#onProductDel" style="-fx-border-radius: 10 10 0 0;" text="Delete">
+                        <Button fx:id="productDelButton" mnemonicParsing="false" onMouseClicked="#onProductDel" style="-fx-border-radius: 10 10 0 0;" text="Delete">
                            <styleClass>
                               <String fx:value="margined-button" />
                               <String fx:value="delete-button" />

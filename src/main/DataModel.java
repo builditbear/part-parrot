@@ -11,6 +11,7 @@ package main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.Comparator;
+import java.util.Locale;
 
 public class DataModel {
     public static class Inventory {
@@ -62,7 +63,7 @@ public class DataModel {
         public static ObservableList<Part> lookupPart(String partName) {
             ObservableList<Part> matches = FXCollections.observableArrayList();
             for(Part part : getAllParts()) {
-                if(part.getName().contains(partName)) {
+                if(part.getName().toLowerCase().contains(partName)) {
                     matches.add(part);
                 }
             }
@@ -72,7 +73,7 @@ public class DataModel {
         public static ObservableList<Product> lookupProduct(String productName) {
             ObservableList<Product> matches = FXCollections.observableArrayList();
             for(Product product : getAllProducts()) {
-                if(product.getName().contains(productName)) {
+                if(product.getName().toLowerCase().contains(productName)) {
                     matches.add(product);
                 }
             }
