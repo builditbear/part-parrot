@@ -26,7 +26,7 @@ public class DataModel {
         // Binary search algorithm for use with InventoryItem lists sorted by ID.
         private static InventoryItem inventorySearch(ObservableList<? extends InventoryItem> list, int l, int r, int itemId) {
             if(r >= l) {
-                int midpoint = (r - l) / 2;
+                int midpoint = l + (r - l) / 2;
                 InventoryItem middleItem = list.get(midpoint);
 
                 if(middleItem.id == itemId) {

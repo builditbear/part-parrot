@@ -26,6 +26,7 @@ public class Main extends Application {
 //        for(DataModel.Part p : DataModel.Inventory.getAllParts()) {
 //            System.out.println(p.getName());
 //        }
+        System.out.println(DataModel.Inventory.lookupPart(2));
     }
 
 }

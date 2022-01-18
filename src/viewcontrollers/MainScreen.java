@@ -16,6 +16,8 @@ import main.DataModel;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 // BUG-LOG
@@ -104,11 +106,27 @@ public class MainScreen extends Controller implements Initializable {
             TextField field = (TextField) keyEvent.getSource();
             String searchTerm = field.getText();
             String fieldId = field.getId();
-
             if(fieldId.equals("partSearchField")) {
-                populateTable(DataModel.Inventory.lookupPart(searchTerm), partsTable);
+                ObservableList<DataModel.Part> parts = FXCollections.observableArrayList();
+                try {
+                    // Check whether the search term is an integer id.
+                    int id = Integer.parseInt(searchTerm);
+                    parts.add(DataModel.Inventory.lookupPart(id));
+                } catch (Exception e) {
+                    System.out.println(e);
+                    // In the event that it is not an integer id, we will search by name instead.
+                    parts = DataModel.Inventory.lookupPart(searchTerm.toLowerCase());
+                }
+                populateTable(parts, partsTable);
             }else if(fieldId.equals("productSearchField")) {
-                populateTable(DataModel.Inventory.lookupProduct(searchTerm), productsTable);
+                ObservableList<DataModel.Product> products = FXCollections.observableArrayList();
+                try {
+                    int id = Integer.parseInt(searchTerm);
+                    products.add(DataModel.Inventory.lookupProduct(id));
+                } catch (NumberFormatException e) {
+                    products = DataModel.Inventory.lookupProduct(searchTerm.toLowerCase());
+                }
+                populateTable(products, productsTable);
             }
         }
     }
