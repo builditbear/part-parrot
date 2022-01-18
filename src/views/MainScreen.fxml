@@ -43,7 +43,7 @@
             </FlowPane>
             <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                <children>
-                  <Button id="exit-button" alignment="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="75.0" styleClass="margined-button" text="Exit" />
+                  <Button id="exit-button" fx:id="exitButton" alignment="CENTER" mnemonicParsing="false" onAction="#shutDown" prefHeight="27.0" prefWidth="75.0" styleClass="margined-button" text="Exit" />
                </children>
             </FlowPane>
             <GridPane GridPane.rowIndex="1">

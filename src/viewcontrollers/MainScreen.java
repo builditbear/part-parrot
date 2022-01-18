@@ -1,5 +1,6 @@
 package viewcontrollers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,6 +50,7 @@ public class MainScreen extends Controller implements Initializable {
     public Button productAddButton;
     public Button productModButton;
     public Button productDelButton;
+    public Button exitButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -147,4 +149,7 @@ public class MainScreen extends Controller implements Initializable {
     }
 
 
+    public void shutDown(ActionEvent actionEvent) {
+        Platform.exit();
+    }
 }
