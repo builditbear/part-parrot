@@ -264,10 +264,10 @@ public class DataModel {
         , "Buggaluggajoozjooz", "Evil Monkey Wrench", "Diamondium Hammerus", "Magic Wand", "Muggle Wand", "Glip-glop"};
         if(qty <= names.length) {
             for(int i = 0; i < qty / 2; i++) {
-                partList.add(new InHouse(generateId(0), names[i], randomInt(100), randomInt(10), 1, 100, randomInt(10000)));
+                partList.add(new InHouse(0, names[i], randomInt(100), randomInt(10), 1, 100, randomInt(10000)));
             }
             for(int i = qty / 2; i < qty; i++){
-                partList.add(new Outsourced(generateId(0), names[i], randomInt(100), randomInt(10), 1, 100, names[i] + "Inc."));
+                partList.add(new Outsourced(0, names[i], randomInt(100), randomInt(10), 1, 100, names[i] + "Inc."));
             }
         }
     }
@@ -282,11 +282,11 @@ public class DataModel {
         if(idType == 0) {
             id = partCounter;
             partCounter += 2;
-            return partCounter;
+            return id;
         } else if(idType == 1) {
             id = productCounter;
             productCounter += 2;
-            return productCounter;
+            return id;
         } else {
             // If this branch is reached, and invalid type was passed in.
             return -1;
