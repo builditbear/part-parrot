@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Controller{
+
     // Resolution must be passed in with format: int x int;
     public void loadScene(ActionEvent event, String title, String view, String resolution) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/views/" + view + ".fxml"));

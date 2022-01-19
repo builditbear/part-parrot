@@ -11,9 +11,13 @@ package main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.Comparator;
-import java.util.Locale;
 
 public class DataModel {
+
+    // Part ID's are even, and Product ID's are odd.
+    private static int partCounter = 0;
+    private static int productCounter = 1;
+
     public static class Inventory {
         private static ObservableList<Part> allParts = FXCollections.observableArrayList();
         private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
@@ -116,8 +120,8 @@ public class DataModel {
         private int min;
         private int max;
 
-        public InventoryItem(int id, String name, double price, int stock, int min, int max) {
-            this.id = id;
+        public InventoryItem(int idType, String name, double price, int stock, int min, int max) {
+            this.id = generateId(idType);
             this.name = name;
             this.price = price;
             this.stock = stock;
@@ -183,8 +187,8 @@ public class DataModel {
     }
 
     public static abstract class Part extends InventoryItem{
-        public Part(int id, String name, double price, int stock, int min, int max) {
-            super(id, name, price, stock, min, max);
+        public Part(int idType, String name, double price, int stock, int min, int max) {
+            super(idType, name, price, stock, min, max);
         }
     }
 
@@ -192,8 +196,8 @@ public class DataModel {
 
         private int machineId;
 
-        public InHouse(int id, String name, double price, int stock, int min, int max, int machineId) {
-            super(id, name, price, stock, min, max);
+        public InHouse(int idType, String name, double price, int stock, int min, int max, int machineId) {
+            super(idType, name, price, stock, min, max);
             this.machineId = machineId;
         }
 
@@ -209,8 +213,8 @@ public class DataModel {
     public static class Outsourced extends Part {
         private String companyName;
 
-        public Outsourced(int id, String name, double price, int stock, int min, int max, String companyName) {
-            super(id, name, price, stock, min, max);
+        public Outsourced(int idType, String name, double price, int stock, int min, int max, String companyName) {
+            super(idType, name, price, stock, min, max);
             this.companyName = companyName;
         }
 
@@ -226,8 +230,8 @@ public class DataModel {
     public static class Product extends InventoryItem {
         private final ObservableList<Part> associatedParts;
 
-        public Product(int id, String name, double price, int stock, int min, int max, ObservableList<Part> associatedParts) {
-            super(id, name, price, stock, min, max);
+        public Product(int idType, String name, double price, int stock, int min, int max, ObservableList<Part> associatedParts) {
+            super(idType, name, price, stock, min, max);
             this.associatedParts = associatedParts;
         }
 
@@ -260,15 +264,32 @@ public class DataModel {
         , "Buggaluggajoozjooz", "Evil Monkey Wrench", "Diamondium Hammerus", "Magic Wand", "Muggle Wand", "Glip-glop"};
         if(qty <= names.length) {
             for(int i = 0; i < qty / 2; i++) {
-                partList.add(new InHouse((i+ 1), names[i], randomInt(100), randomInt(10), 1, 100, randomInt(10000)));
+                partList.add(new InHouse(generateId(0), names[i], randomInt(100), randomInt(10), 1, 100, randomInt(10000)));
             }
             for(int i = qty / 2; i < qty; i++){
-                partList.add(new Outsourced((i+ 1), names[i], randomInt(100), randomInt(10), 1, 100, names[i] + "Inc."));
+                partList.add(new Outsourced(generateId(0), names[i], randomInt(100), randomInt(10), 1, 100, names[i] + "Inc."));
             }
         }
     }
 
     public static int randomInt(int max) {
         return (int) (Math.floor(Math.random() * max + 1));
+    }
+
+    // Returns partId if idType == 0 and productId if idType == 1
+    public static int generateId(int idType) {
+        int id = 0;
+        if(idType == 0) {
+            id = partCounter;
+            partCounter += 2;
+            return partCounter;
+        } else if(idType == 1) {
+            id = productCounter;
+            productCounter += 2;
+            return productCounter;
+        } else {
+            // If this branch is reached, and invalid type was passed in.
+            return -1;
+        }
     }
 }

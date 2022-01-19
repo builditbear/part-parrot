@@ -62,16 +62,16 @@ public class MainScreen extends Controller implements Initializable {
         // Dummy product data for productTable testing.
         DataModel.Inventory.addProduct(new DataModel.Product(1, "Alpha",30.50, 10, 1, 100,
                 FXCollections.observableArrayList()));
-        DataModel.Inventory.addProduct(new DataModel.Product(2, "Beta",30.50, 10, 1, 100,
+        DataModel.Inventory.addProduct(new DataModel.Product(1, "Beta",30.50, 10, 1, 100,
                 FXCollections.observableArrayList()));
-        DataModel.Inventory.addProduct(new DataModel.Product(3, "Gamma",10.75, 50, 1, 100,
+        DataModel.Inventory.addProduct(new DataModel.Product(1, "Gamma",10.75, 50, 1, 100,
                 FXCollections.observableArrayList()));
-        DataModel.Inventory.addProduct(new DataModel.Product(4, "Omega",100.54, 5, 1, 100,
+        DataModel.Inventory.addProduct(new DataModel.Product(1, "Omega",100.54, 5, 1, 100,
                 FXCollections.observableArrayList()));
     }
 
     public void onPartAdd(ActionEvent actionEvent) throws IOException{
-        loadScene(actionEvent, "Add Part", "AddModifyPart", "450x550");
+        loadScene(actionEvent, "Add Part", "AddModifyPart", "550x450");
     }
 
     public void onPartMod(ActionEvent actionEvent) {
