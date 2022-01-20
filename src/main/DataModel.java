@@ -278,7 +278,7 @@ public class DataModel {
 
     // Returns partId if idType == 0 and productId if idType == 1
     public static int generateId(int idType) {
-        int id = 0;
+        int id;
         if(idType == 0) {
             id = partCounter;
             partCounter += 2;
