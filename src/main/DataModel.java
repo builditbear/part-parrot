@@ -194,6 +194,9 @@ public class DataModel {
         public String getTypeSpecificField() {
             return "Generic Part";
         }
+        public void setTypeSpecificField(String s) {
+            System.out.println("Generic Part does not have a type specific field.");
+        }
     }
 
     public static class InHouse extends Part {
@@ -215,7 +218,12 @@ public class DataModel {
 
         @Override
         public String getTypeSpecificField() {
-            return Integer.toString(this.machineId);
+            return Integer.toString(this.getMachineId());
+        }
+
+        @Override
+        public void setTypeSpecificField(String machineId) {
+            this.setMachineId(Integer.parseInt(machineId));
         }
     }
 
