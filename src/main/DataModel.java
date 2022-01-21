@@ -112,7 +112,7 @@ public class DataModel {
 
     // Adding this superclass for both Part and Product recognizing that Product's fields are a superset of Part's fields. Additionally, while writing a comparator to sort
     // ObservableLists of both Parts and Products by their id fields, I realized that the comparator was also something both classes had in common. Just trying to keep it DRY!
-    public static abstract class InventoryItem {
+    public static class InventoryItem {
         private int id;
         private String name;
         private double price;
@@ -190,6 +190,10 @@ public class DataModel {
         public Part(int idType, String name, double price, int stock, int min, int max) {
             super(idType, name, price, stock, min, max);
         }
+
+        public String getTypeSpecificField() {
+            return "Generic Part";
+        }
     }
 
     public static class InHouse extends Part {
@@ -208,6 +212,11 @@ public class DataModel {
         public void setMachineId(int machineId){
             this.machineId = machineId;
         }
+
+        @Override
+        public String getTypeSpecificField() {
+            return Integer.toString(this.machineId);
+        }
     }
 
     public static class Outsourced extends Part {
@@ -224,6 +233,11 @@ public class DataModel {
 
         public void setCompanyName(String companyName) {
             this.companyName = companyName;
+        }
+
+        @Override
+        public String getTypeSpecificField() {
+            return this.companyName;
         }
     }
 
@@ -267,9 +281,20 @@ public class DataModel {
                 partList.add(new InHouse(0, names[i], randomInt(100), randomInt(10), 1, 100, randomInt(10000)));
             }
             for(int i = qty / 2; i < qty; i++){
-                partList.add(new Outsourced(0, names[i], randomInt(100), randomInt(10), 1, 100, names[i] + "Inc."));
+                partList.add(new Outsourced(0, names[i], randomInt(100), randomInt(10), 1, 100, names[i] + " Inc."));
             }
         }
+    }
+
+    public static void generateProducts() {
+        DataModel.Inventory.addProduct(new DataModel.Product(1, "Alpha",30.50, 10, 1, 100,
+                FXCollections.observableArrayList()));
+        DataModel.Inventory.addProduct(new DataModel.Product(1, "Beta",30.50, 10, 1, 100,
+                FXCollections.observableArrayList()));
+        DataModel.Inventory.addProduct(new DataModel.Product(1, "Gamma",10.75, 50, 1, 100,
+                FXCollections.observableArrayList()));
+        DataModel.Inventory.addProduct(new DataModel.Product(1, "Omega",100.54, 5, 1, 100,
+                FXCollections.observableArrayList()));
     }
 
     public static int randomInt(int max) {

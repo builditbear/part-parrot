@@ -22,6 +22,8 @@ public class Main extends Application {
         //Test code for main.DataModel.
         ObservableList<DataModel.Part> parts = DataModel.Inventory.getAllParts();
         DataModel.generateParts(parts, 12);
+        // Dummy product data for productTable testing.
+        DataModel.generateProducts();
     }
 
     private void loadScene(Stage stage, String title, String view, String resolution) throws IOException {

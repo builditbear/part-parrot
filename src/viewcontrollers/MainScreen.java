@@ -58,23 +58,18 @@ public class MainScreen extends Controller implements Initializable {
         // Associating table columns with appropriate object properties.
         populateTable(DataModel.Inventory.getAllParts(), partsTable);
         populateTable(DataModel.Inventory.getAllProducts(), productsTable);
-
-        // Dummy product data for productTable testing.
-        DataModel.Inventory.addProduct(new DataModel.Product(1, "Alpha",30.50, 10, 1, 100,
-                FXCollections.observableArrayList()));
-        DataModel.Inventory.addProduct(new DataModel.Product(1, "Beta",30.50, 10, 1, 100,
-                FXCollections.observableArrayList()));
-        DataModel.Inventory.addProduct(new DataModel.Product(1, "Gamma",10.75, 50, 1, 100,
-                FXCollections.observableArrayList()));
-        DataModel.Inventory.addProduct(new DataModel.Product(1, "Omega",100.54, 5, 1, 100,
-                FXCollections.observableArrayList()));
     }
 
     public void onPartAdd(ActionEvent actionEvent) throws IOException{
         loadScene(actionEvent, "Add Part", "AddModifyPart", "550x450");
     }
 
-    public void onPartMod(ActionEvent actionEvent) {
+    public void onPartMod(ActionEvent actionEvent) throws IOException{
+        DataModel.Part selectedPart = (DataModel.Part) partsTable.getSelectionModel().getSelectedItem();
+        if(selectedPart != null) {
+            AddModifyController.passSelectedPart(selectedPart);
+            loadScene(actionEvent, "Modify Part", "AddModifyPart", "550x450");
+        }
     }
 
     public void onPartDel() {

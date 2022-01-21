@@ -158,7 +158,7 @@
             <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
               <buttons>
                 <Button fx:id="save" mnemonicParsing="false" onAction="#onSave" text="Save" />
-                  <Button fx:id="cancel" mnemonicParsing="false" text="Cancel" />
+                  <Button fx:id="cancel" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
               </buttons>
             </ButtonBar>
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="5">
