@@ -2,17 +2,31 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.Initializable;
 
 import java.util.Comparator;
 
 public class Utilities {
-    public static Comparator<DataModel.InventoryItem> getIdComparator() {
-        return Comparator.comparingInt(item -> item.id);
+    // Part ID's are even, and Product ID's are odd.
+    private static int partCounter = 0;
+    private static int productCounter = 1;
+
+    public static Comparator<Part> getPartComparator() {
+        return Comparator.comparingInt(Part::getId);
     }
 
-    public static Comparator<DataModel.InventoryItem> getNameComparator() {
-        return Comparator.comparing(a -> a.name);
+    public static Comparator<Part> getPartNameComparator() {
+        return Comparator.comparing(Part::getName);
     }
+
+    public static Comparator<Product> getProductIdComparator() {
+        return Comparator.comparingInt(Product::getId);
+    }
+
+    public static Comparator<Product> getProductNameComparator() {
+        return Comparator.comparing(Product::getName);
+    }
+
 
     // Generates new parts with pseudorandom values and inserts them into the given list. It assumes that the given
     // list is empty. Half of the parts generated are InHouse, and half are Outsourced. Written for testing purposes.
@@ -21,23 +35,19 @@ public class Utilities {
                 , "Buggaluggajoozjooz", "Evil Monkey Wrench", "Diamondium Hammerus", "Magic Wand", "Muggle Wand", "Glip-glop"};
         if(qty <= names.length) {
             for(int i = 0; i < qty / 2; i++) {
-                partList.add(new DataModel.InHouse(0, names[i], randomInt(100), randomInt(10), 1, 100, randomInt(10000)));
+                partList.add(new InHouse(0, names[i], randomInt(100), randomInt(10), 1, 100, randomInt(10000)));
             }
             for(int i = qty / 2; i < qty; i++){
-                partList.add(new DataModel.Outsourced(0, names[i], randomInt(100), randomInt(10), 1, 100, names[i] + " Inc."));
+                partList.add(new Outsourced(0, names[i], randomInt(100), randomInt(10), 1, 100, names[i] + " Inc."));
             }
         }
     }
 
     public static void generateProducts() {
-        DataModel.Inventory.addProduct(new DataModel.Product(1, "Alpha",30.50, 10, 1, 100,
-                FXCollections.observableArrayList()));
-        DataModel.Inventory.addProduct(new DataModel.Product(1, "Beta",30.50, 10, 1, 100,
-                FXCollections.observableArrayList()));
-        DataModel.Inventory.addProduct(new DataModel.Product(1, "Gamma",10.75, 50, 1, 100,
-                FXCollections.observableArrayList()));
-        DataModel.Inventory.addProduct(new DataModel.Product(1, "Omega",100.54, 5, 1, 100,
-                FXCollections.observableArrayList()));
+        Inventory.addProduct(new Product(FXCollections.observableArrayList(), generateId(1), "Alpha",30.50, 10, 1, 100));
+        Inventory.addProduct(new Product(FXCollections.observableArrayList(), generateId(1), "Beta",30.50, 10, 1, 100));
+        Inventory.addProduct(new Product(FXCollections.observableArrayList(), generateId(1),  "Gamma",10.75, 50, 1, 100));
+        Inventory.addProduct(new Product(FXCollections.observableArrayList(), generateId(1), "Omega",100.54, 5, 1, 100));
     }
 
     public static int randomInt(int max) {

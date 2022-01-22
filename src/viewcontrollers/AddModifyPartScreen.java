@@ -3,7 +3,6 @@ package viewcontrollers;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import model.DataModel.*;
 
 import java.io.IOException;
 import java.net.URL;

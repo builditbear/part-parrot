@@ -3,33 +3,54 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import static model.Utilities.getIdComparator;
+
 public class Inventory {
 
-    // Part ID's are even, and Product ID's are odd.
-    private static int partCounter = 0;
-    private static int productCounter = 1;
     private static ObservableList<Part> allParts = FXCollections.observableArrayList();
     private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
 
     // User-friendly way to search by ID: Allows users to only provide two parameters instead of manually entering the bounds of the list.
-    public static InventoryItem inventorySearch(ObservableList<? extends InventoryItem> list, int itemId){
-        return inventorySearch(list, 0, list.size() - 1, itemId);
+    public static Part partSearch(ObservableList<Part> list, int itemId){
+        return partSearch(list, 0, list.size() - 1, itemId);
     }
 
-    // Binary search algorithm for use with InventoryItem lists sorted by ID.
-    private static InventoryItem inventorySearch(ObservableList<? extends InventoryItem> list, int l, int r, int itemId) {
+    // Binary search algorithm for use with Part lists sorted by ID.
+    private static Part partSearch(ObservableList<Part> list, int l, int r, int itemId) {
         if(r >= l) {
             int midpoint = l + (r - l) / 2;
-            InventoryItem middleItem = list.get(midpoint);
+            Part middlePart = list.get(midpoint);
 
-            if(middleItem.id == itemId) {
-                return middleItem;
+            if(middlePart.getId() == itemId) {
+                return middlePart;
             }
-            if(middleItem.id > itemId) {
+            if(middlePart.getId() > itemId) {
                 // Search lower half.
-                return inventorySearch(list, l, midpoint - 1, itemId);
+                return partSearch(list, l, midpoint - 1, itemId);
             }
-            return inventorySearch(list, midpoint + 1, r, itemId);
+            return partSearch(list, midpoint + 1, r, itemId);
+        }
+        return null;
+    }
+
+    public static Product productSearch(ObservableList<Product> list, int itemId){
+        return productSearch(list, 0, list.size() - 1, itemId);
+    }
+
+    // Binary search algorithm for use with Part lists sorted by ID.
+    private static Product productSearch(ObservableList<Product> list, int l, int r, int itemId) {
+        if(r >= l) {
+            int midpoint = l + (r - l) / 2;
+            Product middleProduct = list.get(midpoint);
+
+            if(middleProduct.getId() == itemId) {
+                return middleProduct;
+            }
+            if(middleProduct.getId() > itemId) {
+                // Search lower half.
+                return productSearch(list, l, midpoint - 1, itemId);
+            }
+            return productSearch(list, midpoint + 1, r, itemId);
         }
         return null;
     }
@@ -44,13 +65,13 @@ public class Inventory {
 
     // Inventory Item lookups will return null if the item in question is not found.
     public static Part lookupPart(int partId) {
-        allParts.sort(InventoryItem.getIdComparator());
-        return (Part) inventorySearch(getAllParts(), partId);
+        allParts.sort(getIdComparator());
+        return partSearch(getAllParts(), partId);
     }
 
     public static Product lookupProduct(int productId) {
-        allProducts.sort(InventoryItem.getIdComparator());
-        return (Product) inventorySearch(getAllProducts(), productId);
+        allProducts.sort(getIdComparator());
+        return (Product) partSearch(getAllProducts(), productId);
     }
 
     public static ObservableList<Part> lookupPart(String partName) {
