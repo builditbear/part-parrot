@@ -3,13 +3,13 @@ package viewcontrollers;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import main.DataModel.*;
+import model.DataModel.*;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static main.DataModel.randomInt;
+import static model.DataModel.randomInt;
 
 public class AddModifyPartScreen extends AddModifyController implements Initializable {
 
