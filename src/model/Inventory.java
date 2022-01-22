@@ -3,12 +3,14 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import static model.Utilities.getIdComparator;
+import static model.Utilities.getPartComparator;
+import static model.Utilities.getProductComparator;
+
 
 public class Inventory {
 
-    private static ObservableList<Part> allParts = FXCollections.observableArrayList();
-    private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
+    private static final ObservableList<Part> allParts = FXCollections.observableArrayList();
+    private static final ObservableList<Product> allProducts = FXCollections.observableArrayList();
 
     // User-friendly way to search by ID: Allows users to only provide two parameters instead of manually entering the bounds of the list.
     public static Part partSearch(ObservableList<Part> list, int itemId){
@@ -63,15 +65,14 @@ public class Inventory {
         getAllProducts().add(newProduct);
     }
 
-    // Inventory Item lookups will return null if the item in question is not found.
+    // Both Part and Product lookups will return null if the item in question is not found.
     public static Part lookupPart(int partId) {
-        allParts.sort(getIdComparator());
+        allParts.sort(getPartComparator());
         return partSearch(getAllParts(), partId);
     }
-
     public static Product lookupProduct(int productId) {
-        allProducts.sort(getIdComparator());
-        return (Product) partSearch(getAllProducts(), productId);
+        allProducts.sort(getProductComparator());
+        return productSearch(getAllProducts(), productId);
     }
 
     public static ObservableList<Part> lookupPart(String partName) {

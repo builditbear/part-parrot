@@ -19,7 +19,7 @@ public class Utilities {
         return Comparator.comparing(Part::getName);
     }
 
-    public static Comparator<Product> getProductIdComparator() {
+    public static Comparator<Product> getProductComparator() {
         return Comparator.comparingInt(Product::getId);
     }
 
