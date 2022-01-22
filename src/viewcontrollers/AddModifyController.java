@@ -2,11 +2,16 @@ package viewcontrollers;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import model.InHouse;
+import model.Part;
+import model.Product;
+
+import static model.Utilities.randomInt;
 
 public class AddModifyController extends Controller{
 
-    private static DataModel.Part selectedPart;
-    private static DataModel.Product selectedProduct;
+    private static Part selectedPart;
+    private static Product selectedProduct;
 
     public TextField idField;
     public TextField nameField;
@@ -18,45 +23,20 @@ public class AddModifyController extends Controller{
     public Button cancel;
 
 
-    // Used by both the product and part screen controllers to validate and extract values from the current view
-    // that both classes have in common. These values are passed back in an InventoryItem whose values can then
-    // be used to create a part or product.
-    public DataModel.InventoryItem getCommonFields (){
-        String name = nameField.getText();
-        int inv = 0;
-        if(validateIntInput(invField.getText())) {
-            inv = Integer.parseInt(invField.getText());
-        }
-        double price = 0;
-        if(validateDoubleInput(priceField.getText())) {
-            price = Double.parseDouble(priceField.getText());
-        }
-        int max = 1;
-        if(validateIntInput(maxField.getText())) {
-            max = Integer.parseInt(maxField.getText());
-        }
-        int min = 0;
-        if(validateIntInput(minField.getText()) && min < max) {
-            min = Integer.parseInt(minField.getText());
-        }
-
-        return new DataModel.InventoryItem(0, name, price, inv, min, max);
-    }
-
     // Used to pass in InventoryItem data from the main screen.
-    public static void passSelectedPart(DataModel.Part part) {
+    public static void passSelectedPart(Part part) {
         selectedPart = part;
     }
 
-    public static DataModel.Part getSelectedPart() {
+    public static Part getSelectedPart() {
         return selectedPart;
     }
 
-    public static void passSelectedProduct(DataModel.Product product) {
+    public static void passSelectedProduct(Product product) {
         selectedProduct = product;
     }
 
-    public static DataModel.Product getSelectedProduct() {
+    public static Product getSelectedProduct() {
         return selectedProduct;
     }
 }
