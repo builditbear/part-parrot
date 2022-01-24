@@ -5,32 +5,23 @@ package main;
 
 import javafx.application.Application;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import model.Inventory;
+import model.Part;
 import java.io.IOException;
+
+import static model.Utilities.*;
+import static viewcontrollers.Controller.loadMainScene;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage stage) throws Exception {
-        loadScene(stage, "Main Screen", "MainScreen", "490x940");
-
+    public void start(Stage stage) throws IOException {
+        loadMainScene(stage);
         //Test code for model.DataModel.
-        ObservableList<DataModel.Part> parts = DataModel.Inventory.getAllParts();
-        DataModel.generateParts(parts, 12);
+        ObservableList<Part> parts = Inventory.getAllParts();
+        generateParts(parts, 12);
         // Dummy product data for productTable testing.
-        DataModel.generateProducts();
-    }
-
-    private void loadScene(Stage stage, String title, String view, String resolution) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/views/" + view + ".fxml"));
-        String[] dimensions = resolution.split("x");
-        Scene scene = new Scene(root, Integer.parseInt(dimensions[1]), Integer.parseInt(dimensions[0]));
-        stage.setTitle(title);
-        stage.setScene(scene);
-        stage.show();
+        generateProducts();
     }
 }

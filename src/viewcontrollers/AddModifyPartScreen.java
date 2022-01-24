@@ -3,6 +3,7 @@ package viewcontrollers;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import model.InHouse;
 import model.Outsourced;
 import model.Part;
@@ -12,8 +13,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static model.Inventory.addPart;
-import static model.Utilities.generateId;
-import static model.Utilities.randomInt;
+import static model.Utilities.*;
 
 public class AddModifyPartScreen extends AddModifyController implements Initializable {
 
@@ -77,7 +77,7 @@ public class AddModifyPartScreen extends AddModifyController implements Initiali
                 loadScene(actionEvent, "Main Screen", "MainScreen", "490x940");
             }
             updatePart(part, newPart);
-            loadScene(actionEvent, "Main Screen", "MainScreen", "490x940");
+            loadMainScene((Stage) title.getScene().getWindow());
         }
     }
 
@@ -134,6 +134,6 @@ public class AddModifyPartScreen extends AddModifyController implements Initiali
     }
 
     public void onCancel(ActionEvent actionEvent) throws IOException{
-        loadScene(actionEvent, "Main Screen", "MainScreen", "490x940");
+        loadMainScene((Stage) title.getScene().getWindow());
     }
 }

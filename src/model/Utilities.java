@@ -2,12 +2,18 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Comparator;
+import java.util.Objects;
 
 public class Utilities {
-    // Part ID's are even, and Product ID's are odd.
+    // Part IDs are even, and Product IDs are odd.
     private static int partCounter = 0;
     private static int productCounter = 1;
 
@@ -35,10 +41,10 @@ public class Utilities {
                 , "Buggaluggajoozjooz", "Evil Monkey Wrench", "Diamondium Hammerus", "Magic Wand", "Muggle Wand", "Glip-glop"};
         if(qty <= names.length) {
             for(int i = 0; i < qty / 2; i++) {
-                partList.add(new InHouse(0, names[i], randomInt(100), randomInt(10), 1, 100, randomInt(10000)));
+                partList.add(new InHouse(generateId(0), names[i], randomInt(100), randomInt(10), 1, 100, randomInt(10000)));
             }
             for(int i = qty / 2; i < qty; i++){
-                partList.add(new Outsourced(0, names[i], randomInt(100), randomInt(10), 1, 100, names[i] + " Inc."));
+                partList.add(new Outsourced(generateId(0), names[i], randomInt(100), randomInt(10), 1, 100, names[i] + " Inc."));
             }
         }
     }

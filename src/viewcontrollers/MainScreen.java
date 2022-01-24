@@ -12,6 +12,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
+import model.Inventory;
+import model.Part;
+import model.Product;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,20 +33,20 @@ public class MainScreen extends Controller implements Initializable {
     public TextField partSearchField;
     public TextField productSearchField;
 
-    public TableView partsTable;
-    public TableColumn partId;
-    public TableColumn partName;
-    public TableColumn partStock;
-    public TableColumn partPrice;
+    public TableView<Part> partsTable;
+    public TableColumn<Part, Integer> partId;
+    public TableColumn<Part, String> partName;
+    public TableColumn<Part, Integer> partStock;
+    public TableColumn<Part, Double> partPrice;
     public Button partAddButton;
     public Button partModButton;
     public Button partDelButton;
 
-    public TableView productsTable;
-    public TableColumn productId;
-    public TableColumn productName;
-    public TableColumn productStock;
-    public TableColumn productPrice;
+    public TableView<Product> productsTable;
+    public TableColumn<Product, Integer> productId;
+    public TableColumn<Product, String> productName;
+    public TableColumn<Product, Integer> productStock;
+    public TableColumn<Product, Double> productPrice;
     public Button productAddButton;
     public Button productModButton;
     public Button productDelButton;
@@ -50,10 +54,9 @@ public class MainScreen extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         // Associating table columns with appropriate object properties.
-        populateTable(DataModel.Inventory.getAllParts(), partsTable);
-        populateTable(DataModel.Inventory.getAllProducts(), productsTable);
+        populatePartsTable(Inventory.getAllParts(), partsTable);
+        populateProductTable(Inventory.getAllProducts(), productsTable);
     }
 
     public void onPartAdd(ActionEvent actionEvent) throws IOException{
@@ -61,7 +64,7 @@ public class MainScreen extends Controller implements Initializable {
     }
 
     public void onPartMod(ActionEvent actionEvent) throws IOException{
-        DataModel.Part selectedPart = (DataModel.Part) partsTable.getSelectionModel().getSelectedItem();
+        Part selectedPart = partsTable.getSelectionModel().getSelectedItem();
         if(selectedPart != null) {
             AddModifyController.passSelectedPart(selectedPart);
             loadScene(actionEvent, "Modify Part", "AddModifyPart", "550x450");
@@ -69,9 +72,9 @@ public class MainScreen extends Controller implements Initializable {
     }
 
     public void onPartDel() {
-        DataModel.Part selectedPart = (DataModel.Part) partsTable.getSelectionModel().getSelectedItem();
+        Part selectedPart = partsTable.getSelectionModel().getSelectedItem();
         boolean deletedFromTableView = partsTable.getItems().remove(selectedPart);
-        boolean deletedFromInventory = DataModel.Inventory.deletePart(selectedPart);
+        boolean deletedFromInventory = Inventory.deletePart(selectedPart);
         if(!(deletedFromTableView && deletedFromInventory)){
             System.out.println("Error: No part selected.");
         }
@@ -85,9 +88,9 @@ public class MainScreen extends Controller implements Initializable {
     }
 
     public void onProductDel() {
-        DataModel.Product selectedProduct = (DataModel.Product) productsTable.getSelectionModel().getSelectedItem();
+        Product selectedProduct = productsTable.getSelectionModel().getSelectedItem();
         boolean deletedFromTableView = productsTable.getItems().remove(selectedProduct);
-        boolean deletedFromInventory = DataModel.Inventory.deleteProduct(selectedProduct);
+        boolean deletedFromInventory = Inventory.deleteProduct(selectedProduct);
         if(!(deletedFromTableView && deletedFromInventory)){
             System.out.println("Error: No product selected.");
         }
@@ -100,43 +103,44 @@ public class MainScreen extends Controller implements Initializable {
             String searchTerm = field.getText();
             String fieldId = field.getId();
             if(fieldId.equals("partSearchField")) {
-                ObservableList<DataModel.Part> parts = FXCollections.observableArrayList();
+                ObservableList<Part> parts = FXCollections.observableArrayList();
                 try {
                     // Check whether the search term is an integer id.
                     int id = Integer.parseInt(searchTerm);
-                    parts.add(DataModel.Inventory.lookupPart(id));
+                    parts.add(Inventory.lookupPart(id));
                 } catch (Exception e) {
-                    System.out.println(e);
+                    e.printStackTrace();
                     // In the event that it is not an integer id, we will search by name instead.
-                    parts = DataModel.Inventory.lookupPart(searchTerm.toLowerCase());
+                    parts = Inventory.lookupPart(searchTerm.toLowerCase());
                 }
-                populateTable(parts, partsTable);
+                populatePartsTable(parts, partsTable);
             }else if(fieldId.equals("productSearchField")) {
-                ObservableList<DataModel.Product> products = FXCollections.observableArrayList();
+                ObservableList<Product> products = FXCollections.observableArrayList();
                 try {
                     int id = Integer.parseInt(searchTerm);
-                    products.add(DataModel.Inventory.lookupProduct(id));
+                    products.add(Inventory.lookupProduct(id));
                 } catch (NumberFormatException e) {
-                    products = DataModel.Inventory.lookupProduct(searchTerm.toLowerCase());
+                    products = Inventory.lookupProduct(searchTerm.toLowerCase());
                 }
-                populateTable(products, productsTable);
+                populateProductTable(products, productsTable);
             }
         }
     }
 
-    public void populateTable(ObservableList<? extends DataModel.InventoryItem> list, TableView table) {
+    public void populatePartsTable(ObservableList<Part> list, TableView<Part> table) {
         table.setItems(list);
-        if(table.getId().equals("partsTable")) {
-            partId.setCellValueFactory(new PropertyValueFactory<>("id"));
-            partName.setCellValueFactory(new PropertyValueFactory<>("name"));
-            partStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
-            partPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-        } else if(table.getId().equals("productsTable")) {
-            productId.setCellValueFactory(new PropertyValueFactory<>("id"));
-            productName.setCellValueFactory(new PropertyValueFactory<>("name"));
-            productStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
-            productPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-        }
+        partId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        partName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        partStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        partPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+    }
+
+    public void populateProductTable(ObservableList<Product> list, TableView<Product> table) {
+        table.setItems(list);
+        productId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        productName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        productStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        productPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
 

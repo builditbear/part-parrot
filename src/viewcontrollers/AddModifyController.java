@@ -1,12 +1,11 @@
 package viewcontrollers;
 
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import model.InHouse;
+import javafx.stage.Stage;
 import model.Part;
 import model.Product;
-
-import static model.Utilities.randomInt;
 
 public class AddModifyController extends Controller{
 
