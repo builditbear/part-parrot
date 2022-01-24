@@ -9,10 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 import model.Inventory;
 import model.Part;
 import model.Product;
@@ -20,6 +18,11 @@ import model.Product;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static model.Utilities.populatePartsTable;
+import static model.Utilities.populateProductTable;
+import static viewcontrollers.AddModifyController.setSelectedPart;
+import static viewcontrollers.AddModifyController.setSelectedProduct;
 
 // BUG-LOG
 // 01/16/22: Delete button not working after the tableview has been altered via the search field.
@@ -55,8 +58,9 @@ public class MainScreen extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Associating table columns with appropriate object properties.
-        populatePartsTable(Inventory.getAllParts(), partsTable);
-        populateProductTable(Inventory.getAllProducts(), productsTable);
+        populatePartsTable(Inventory.getAllParts(), partsTable, partId, partName, partStock, partPrice);
+        populateProductTable(Inventory.getAllProducts(), productsTable, productId, productName, productStock,
+                productPrice);
     }
 
     public void onPartAdd(ActionEvent actionEvent) throws IOException{
@@ -66,8 +70,10 @@ public class MainScreen extends Controller implements Initializable {
     public void onPartMod(ActionEvent actionEvent) throws IOException{
         Part selectedPart = partsTable.getSelectionModel().getSelectedItem();
         if(selectedPart != null) {
-            AddModifyController.passSelectedPart(selectedPart);
+            setSelectedPart(selectedPart);
             loadScene(actionEvent, "Modify Part", "AddModifyPart", "550x450");
+        } else {
+            System.out.println("Not part has been selected.");
         }
     }
 
@@ -84,7 +90,15 @@ public class MainScreen extends Controller implements Initializable {
         loadScene(actionEvent, "Add Product", "AddModifyProduct","500x900");
     }
 
-    public void onProductMod(ActionEvent actionEvent) {
+    public void onProductMod(ActionEvent actionEvent) throws IOException {
+        Product selectedProduct = productsTable.getSelectionModel().getSelectedItem();
+        if(selectedProduct != null) {
+            setSelectedProduct(selectedProduct);
+            loadScene(actionEvent, "Modify Product", "AddModifyProduct","500x900");
+        } else {
+            System.out.println("No product has been selected.");
+        }
+
     }
 
     public void onProductDel() {
@@ -108,41 +122,24 @@ public class MainScreen extends Controller implements Initializable {
                     // Check whether the search term is an integer id.
                     int id = Integer.parseInt(searchTerm);
                     parts.add(Inventory.lookupPart(id));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch(NumberFormatException e) {
                     // In the event that it is not an integer id, we will search by name instead.
                     parts = Inventory.lookupPart(searchTerm.toLowerCase());
                 }
-                populatePartsTable(parts, partsTable);
+                populatePartsTable(parts, partsTable, partId, partName, partStock, partPrice);
             }else if(fieldId.equals("productSearchField")) {
                 ObservableList<Product> products = FXCollections.observableArrayList();
                 try {
                     int id = Integer.parseInt(searchTerm);
                     products.add(Inventory.lookupProduct(id));
-                } catch (NumberFormatException e) {
+                } catch(NumberFormatException e) {
                     products = Inventory.lookupProduct(searchTerm.toLowerCase());
                 }
-                populateProductTable(products, productsTable);
+                populateProductTable(products, productsTable, productId, productName, productStock,
+                        productPrice);
             }
         }
     }
-
-    public void populatePartsTable(ObservableList<Part> list, TableView<Part> table) {
-        table.setItems(list);
-        partId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        partName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        partStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        partPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-    }
-
-    public void populateProductTable(ObservableList<Product> list, TableView<Product> table) {
-        table.setItems(list);
-        productId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        productName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        productStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        productPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-    }
-
 
     public void shutDown(ActionEvent actionEvent) {
         Platform.exit();

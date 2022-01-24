@@ -2,15 +2,11 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.io.IOException;
 import java.util.Comparator;
-import java.util.Objects;
 
 public class Utilities {
     // Part IDs are even, and Product IDs are odd.
@@ -75,5 +71,25 @@ public class Utilities {
             // If this branch is reached, and invalid type was passed in.
             return -1;
         }
+    }
+
+    public static void populatePartsTable(ObservableList<Part> list,  TableView<Part> table,
+                                   TableColumn<Part, Integer> id, TableColumn<Part, String> name,
+                                   TableColumn<Part, Integer> stock, TableColumn<Part, Double> price) {
+        table.setItems(list);
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        price.setCellValueFactory(new PropertyValueFactory<>("price"));
+    }
+
+    public static void populateProductTable(ObservableList<Product> list, TableView<Product> table,
+                                     TableColumn<Product, Integer> id, TableColumn<Product, String> name,
+                                     TableColumn<Product, Integer> stock, TableColumn<Product, Double> price) {
+        table.setItems(list);
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        price.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 }

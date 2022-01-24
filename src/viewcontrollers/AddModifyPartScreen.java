@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.InHouse;
+import model.Inventory;
 import model.Outsourced;
 import model.Part;
 
@@ -17,7 +18,6 @@ import static model.Utilities.*;
 
 public class AddModifyPartScreen extends AddModifyController implements Initializable {
 
-    public Label title;
     public RadioButton inHouse;
     public ToggleGroup partType;
     public RadioButton outsourced;
@@ -28,7 +28,7 @@ public class AddModifyPartScreen extends AddModifyController implements Initiali
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Render the part to be modified if one was passed in.
         Part selectedPart = getSelectedPart();
-        if(getSelectedPart() != null) {
+        if(selectedPart != null) {
             title.setText("Modify Part");
             idField.setText(Integer.toString(selectedPart.getId()));
             nameField.setText(selectedPart.getName());
@@ -74,29 +74,28 @@ public class AddModifyPartScreen extends AddModifyController implements Initiali
                 assert newPart != null;
             } catch(NullPointerException e) {
                 System.out.println("the newPart object you are trying to save is null.");
-                loadScene(actionEvent, "Main Screen", "MainScreen", "490x940");
+                loadMainScene((Stage) title.getScene().getWindow());
             }
             updatePart(part, newPart);
-            loadMainScene((Stage) title.getScene().getWindow());
         }
+        loadMainScene((Stage) title.getScene().getWindow());
     }
 
     public void updatePart(Part part, Part newPart) {
-        part.setName(newPart.getName());
-        part.setStock(newPart.getStock());
-        part.setPrice(newPart.getPrice());
-        part.setMax(newPart.getMax());
-        part.setMin(newPart.getMin());
+        int indexOfPart = Inventory.getAllParts().indexOf(part);
         if (inHouse.isSelected()) {
             // If the entered machine ID isn't an integer, then the part's old machine ID will remain.
             if (validateIntInput(typeSpecificField.getText())) {
                 int machineId = Integer.parseInt(typeSpecificField.getText());
-                ((InHouse) part).setMachineId(machineId);
-            } else if (outsourced.isSelected()) {
-                String companyName = typeSpecificField.getText();
-                ((Outsourced) part).setCompanyName(companyName);
+                ((InHouse) newPart).setMachineId(machineId);
+                Inventory.updatePart(indexOfPart, newPart);
             }
+        } else if (outsourced.isSelected()) {
+                String companyName = typeSpecificField.getText();
+                ((Outsourced) newPart).setCompanyName(companyName);
+                Inventory.updatePart(indexOfPart, newPart);
         }
+        setSelectedPart(null);
     }
 
     // Used by both the product and part screen controllers to validate and extract values from the current view

@@ -1,9 +1,8 @@
 package viewcontrollers;
 
-import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import model.Part;
 import model.Product;
 
@@ -12,6 +11,7 @@ public class AddModifyController extends Controller{
     private static Part selectedPart;
     private static Product selectedProduct;
 
+    public Label title;
     public TextField idField;
     public TextField nameField;
     public TextField invField;
@@ -23,7 +23,7 @@ public class AddModifyController extends Controller{
 
 
     // Used to pass in InventoryItem data from the main screen.
-    public static void passSelectedPart(Part part) {
+    public static void setSelectedPart(Part part) {
         selectedPart = part;
     }
 
@@ -31,7 +31,7 @@ public class AddModifyController extends Controller{
         return selectedPart;
     }
 
-    public static void passSelectedProduct(Product product) {
+    public static void setSelectedProduct(Product product) {
         selectedProduct = product;
     }
 
