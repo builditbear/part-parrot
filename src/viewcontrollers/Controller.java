@@ -12,9 +12,17 @@ import model.Utilities;
 import java.io.IOException;
 import java.util.Objects;
 
+/** Describes methods common to all view controllers */
 public class Controller {
 
-    // Resolution must be passed in with format: int x int;
+    /** Loads and renders a Scene based on the given View and applies the given metadata.
+     *
+     * @param event An event from which the Stage can be derived. Any will do, but this is expected to be the event
+     *              passed into the event handler which calls this method.
+     * @param title The desired Scene title to be displayed in the title bar of the resulting window.
+     * @param view The name of the fxml View file we wish to render as a Scene.
+     * @param resolution A String describing the resolution to render the scene at, of the format "[int] x [int]".
+     */
     public void loadScene(ActionEvent event, String title, String view, String resolution) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/" + view + ".fxml")));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -26,6 +34,10 @@ public class Controller {
         stage.show();
     }
 
+    /** Loads and renders the main Scene.
+     *
+     * @param stage The Stage we wish to render the main Scene upon.
+     */
     public static void loadMainScene(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(Utilities.class.getResource("/views/" + "MainScreen.fxml")));
         restoreExitBehavior(stage);
@@ -35,7 +47,11 @@ public class Controller {
         stage.show();
     }
 
-    // Returns true if and only if the input string can be converted to a positive integer.
+    /** Validates whether an int can be parsed from the given String.
+     *
+     * @param s The String to be validated.
+     * @return True if an int can be parsed from s, false otherwise.
+     */
     public boolean validateIntInput(String s) {
         int i;
         try {
@@ -52,6 +68,11 @@ public class Controller {
         }
     }
 
+    /** Validates whether a double can be parsed from the given String.
+     *
+     * @param s The String to be validated.
+     * @return True is a double can be parsed from s, false otherwise.
+     */
     public boolean validateDoubleInput(String s) {
         double i;
         try {
@@ -68,6 +89,10 @@ public class Controller {
         }
     }
 
+    /** Alters the Stage's Close button (the X at the top right on Windows or top left on Mac) such that it brings
+     *  the user back to the main Scene instead of shutting down the application.
+     * @param stage The Stage whose Close button behavior is to be altered.
+     */
     public void redirectExitToMainScreen(Stage stage) {
         stage.setOnCloseRequest(windowEvent -> {
             windowEvent.consume();
@@ -79,6 +104,11 @@ public class Controller {
         });
     }
 
+    /** Restores the Stage's exit behavior to its default state, such that it once again close the application when
+     *  clicked.
+     *
+     * @param stage The Stage whose Close button behavior is to be restored.
+     */
     public static void restoreExitBehavior(Stage stage) {
         stage.setOnCloseRequest(windowEvent -> {
             Platform.exit();

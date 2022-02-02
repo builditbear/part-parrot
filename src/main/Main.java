@@ -13,6 +13,15 @@ import java.io.IOException;
 import static model.Utilities.*;
 import static viewcontrollers.Controller.loadMainScene;
 
+/** Creates a JavaFX driven GUI app that manages Parts and Products associated with those Parts.
+ * JAVADOC FOLDER LOCATION: part-parrot/javadoc
+ * FUTURE ENHANCEMENT: Given how much the Part and Product classes have in commons (nearly all of their class members,
+ * including fields and methods), a superclass could easily be written for these classes that would greatly reduce
+ * duplicate code and make it much easier to extend Part-Parrot to support a wide variety of item types other than
+ * generic Parts and Products.
+ * FUTURE ENHANCEMENT: Support for multiple Inventories (i.e., moving to an instance based Inventory implementation)d
+ * and multi-window support which would allow system from multiple organizations or stores to be managed in tandem.
+ */
 public class Main extends Application {
 
     @Override
